@@ -1,6 +1,7 @@
 /*
 	You have all permissions to modified this code and improve its capablilities.
 	SparkTeam - Computer Team
+	SparkTB v1.1
 */
 
 #include<vector>
