@@ -13,4 +13,6 @@ so doing 'Spark ' is the same like 'spark'
 
 Spark v1.2(beta)
 ----------------------
-Bug: detect a correct output when the target program outputs many lines in the file.
+Bug: not detecting a correct output when the target program outputs many lines in the file
+and the tests collpse each others
+suggested fix: add a counter in the readFile Function and states the case to the compareResults function like runtimeErrorDetector
