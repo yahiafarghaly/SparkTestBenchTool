@@ -1,0 +1,16 @@
+Spark v1.0
+----------------
+the first release
+*detect runtime errors and no outputs
+*able to customize another test cases
+
+Spark v1.1
+----------------
+*Fix extra spaces detection and make it false
+so doing 'Spark ' is the same like 'spark'
+*watch testCases at the time of performing it.
+*added no_output counter and runtimeError counter
+
+Spark v1.2(beta)
+----------------------
+Bug: detect a correct output when the target program outputs many lines in the file.
