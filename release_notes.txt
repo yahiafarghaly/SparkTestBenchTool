@@ -11,8 +11,7 @@ so doing 'Spark ' is the same like 'spark'
 *watch testCases at the time of performing it.
 *added no_output counter and runtimeError counter
 
-Spark v1.2(beta)
+Spark v1.2
 ----------------------
-Bug: not detecting a correct output when the target program outputs many lines in the file
-and the tests collpse each others
-suggested fix: add a counter in the readFile Function and states the case to the compareResults function like runtimeErrorDetector
+fix multi-lines detection
+fix auto detection on wrong behaviours (i.e test tool cannot detect the mess caused by your program)

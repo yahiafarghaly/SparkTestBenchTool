@@ -272,6 +272,7 @@ void compareResults(vector<string>& Actual, vector<string>& Expected)
 	for (uint32 i = 0; i < iterations_size; i++)
 	{
 		deleteLastSpaces(Actual.at(i));
+		deleteLastSpaces(Expected.at(i));
 		if (Expected.at(i) == Actual.at(i)) cout << "Test#" << i + 1 << ": OK!" << endl;
 		else
 		{
@@ -389,7 +390,7 @@ void setOption(char* option)
 		cout<<"and pass them To the program"<<endl;;
 
 	}
-	else if(opt == "-version") cout<<"Developed by SparkTeam,Test Tool v1.1"<<endl;
+	else if(opt == "-version") cout<<"Developed by SparkTeam,Test Tool v1.2"<<endl;
 	else if(opt  == "-clear")
 	{
 		remove("ActualResults");
