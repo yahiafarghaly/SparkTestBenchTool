@@ -1,7 +1,7 @@
 /*
 	You have all permissions to modified this code and improve its capablilities.
 	SparkTeam - Computer Team
-	SparkTB v1.1
+	SparkTB v1.2
 */
 
 #include<vector>
@@ -186,6 +186,7 @@ int main(int argc,char*argv[])
 	compareResults(actualResult,g_ExpectedResult);
 	remove("ActualResults");
 	cout<<endl<<"End Tests"<<endl;
+	cout<<"Spark TeamWork - EECE 2017"<<endl;
 
 	return 0;
 }
