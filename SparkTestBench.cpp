@@ -11,6 +11,7 @@
 #include<string>
 #include<string.h>
 #include<fstream>
+#include <assert.h>  
 #ifndef __linux__
 #include<windows.h>
 #endif
@@ -19,6 +20,7 @@ typedef unsigned int uint32;
 
 #define NO_OUTPUT "xu87@#&01*"
 #define RUNTIME_ERROR "$&)9(hNa*"
+#define MULTI_LINES "!@#$*()_+/*"
 
 vector<string> g_TestCase;
 vector<string> g_ExpectedResult;
@@ -41,7 +43,8 @@ void adjustExecutableString(string &exe_str);
 void setOption(char* opt);
 /*delete spaces in the last of the string*/
 void deleteLastSpaces(string& str);
-
+/*return number of lines in a file*/
+long n_lines(const char* filename);
 
 int main(int argc,char*argv[])
 {
@@ -168,6 +171,8 @@ int main(int argc,char*argv[])
 			//if the program doesn't output the result of the test case,don't crash and tell him it is not implemented
 				if(filesize("ActualResults") == 0)  
 					WriteToFile("ActualResults",NO_OUTPUT);
+				if(n_lines("ActualResults") > 1)
+					WriteToFile("ActualResults",MULTI_LINES);
 
 			readFile("ActualResults", actualResult);
 	}
@@ -181,6 +186,7 @@ int main(int argc,char*argv[])
 	compareResults(actualResult,g_ExpectedResult);
 	remove("ActualResults");
 	cout<<endl<<"End Tests"<<endl;
+
 	return 0;
 }
 
@@ -231,11 +237,36 @@ void readFile(string loc, vector<string>& vect)
 	myfile.close();
 }
 
+long n_lines(const char* filename)
+{
+	long i_line=0;
+	string line;
+	ifstream myfile(filename, ios::in);
+	if (myfile.fail())
+		perror("Error Reading The Input File");
+	else
+		while (getline(myfile, line)) ++i_line;
+
+	myfile.close();
+
+	return i_line;
+}
+
 void compareResults(vector<string>& Actual, vector<string>& Expected)
 {
+	uint32 nonEqualFlag =false;
+	uint32 oldExpectedSize = Expected.size();
+	if(Expected.size() != Actual.size())
+	{
+		Expected.resize(Actual.size());
+		nonEqualFlag =true;
+		//assert(iterations_size == Actual.size());
+	}
+
 	uint32 iterations_size = Expected.size();
 	uint32 FailCounter=0;
 	uint32 noOutputCounter =0;
+	uint32 MULTI_LINESCounter =0;
 
 	for (uint32 i = 0; i < iterations_size; i++)
 	{
@@ -258,6 +289,12 @@ void compareResults(vector<string>& Actual, vector<string>& Expected)
 				cout << "Test#" << i + 1 << ": " << g_TestCase.at(i) << endl;
 				cout << "<RUNTIME ERROR>" << endl;
 			}
+			else if(Actual.at(i) == MULTI_LINES)
+			{
+				cout << "Test#" << i + 1 << ": " << g_TestCase.at(i) << endl;
+				cout << "<MULTI_LINES>" << endl;
+				MULTI_LINESCounter++;
+			}
 			else
 			{
 				if(FailCounter < 3)
@@ -266,9 +303,10 @@ void compareResults(vector<string>& Actual, vector<string>& Expected)
 				cout<<"Command: "<<g_TestCase.at(i)<<endl;
 				cout << "Expected Output: '" << Expected.at(i) << "', Length: " << Expected.at(i).size() << endl;
 				cout << "Actual Output:   '" << Actual.at(i) << "', Length: " << Actual.at(i).size() << endl;
+				FailCounter++;
 			}
 			cout << "----------------------" << endl;
-			FailCounter++;
+		
 
 #ifdef __linux__
 			system("tput sgr0");
@@ -289,10 +327,24 @@ void compareResults(vector<string>& Actual, vector<string>& Expected)
 		}
 	}	
 	cout<<endl;
-	cout<<"Passed Tests: "<<iterations_size-FailCounter <<endl;
+	cout<<"Total Tests: "<<iterations_size<<endl;
+	cout<<"Passed Tests: "<<(iterations_size-FailCounter-noOutputCounter-g_RuntimeError.size()-MULTI_LINESCounter) <<endl;
 	cout<<"Failed Tests: "<<FailCounter <<endl;
 	cout<<"No Output Tests: "<<noOutputCounter<<endl;
 	cout<<"Run Time Error Tests: "<<g_RuntimeError.size()<<endl;
+	cout<<"Multi Lines Outputs from the target:"<<MULTI_LINESCounter<<endl;
+
+	if(nonEqualFlag == true)
+	{
+		cout<<endl;
+		cout<<"Expected iterations size: "<<oldExpectedSize<<endl;
+		cout<<"Actual size: "<<Actual.size()<<endl<<endl;
+		cout<<"If you see this"<<endl;
+		cout<<"that's meaning your program is doing something wrong"<<endl;
+		cout<<"and test tool and cannot detect it"<<endl;
+		cout<<Actual.size()<<" Tests performed according to the behaviour of your program"<<endl;
+	}
+
 
 }
 void adjustExecutableString(string &exe_str)
