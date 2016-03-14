@@ -4,6 +4,8 @@
 	SparkTB v1.2
 */
 
+#define VERSION 1.2
+
 #include<vector>
 #include <stdlib.h>
 #include <stdio.h>
@@ -390,7 +392,7 @@ void setOption(char* option)
 		cout<<"and pass them To the program"<<endl;;
 
 	}
-	else if(opt == "-version") cout<<"Developed by SparkTeam,Test Tool v1.2"<<endl;
+	else if(opt == "-version") cout<<"Developed by SparkTeam,Test Tool v"<<VERSION<<endl;
 	else if(opt  == "-clear")
 	{
 		remove("ActualResults");
