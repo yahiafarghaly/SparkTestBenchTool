@@ -4,7 +4,7 @@
 	SparkTB v1.2
 */
 
-#define VERSION 1.2
+#define VERSION 1.03
 
 #include<vector>
 #include <stdlib.h>
@@ -76,13 +76,13 @@ int main(int argc,char*argv[])
 					exit(1);
 				}
 
-			exit(2);
+			exit(0);
 		}
 		else if(argc >4)
 		{
 			cerr<<"Too many arguments,Three is enough"<<endl;
 			cout<<"SparkTB .exe/.cpp file TestCasesFile ExpectedResultsFile"<<endl;
-			exit(3);
+			exit(0);
 		}
 		else
 		{
@@ -105,7 +105,7 @@ int main(int argc,char*argv[])
 	if (!(isExist(sparkTest) && isExist(sparkExpected)))
 	{
 		cerr << "Missing Spark Files\n";
-		exit(1);
+		exit(0);
 	}
 	else cout << "Found Spark Files" << endl;
 
@@ -113,14 +113,14 @@ int main(int argc,char*argv[])
 	if (!isExist(executableProgram))
 	{
 		cerr << "Missing your exexutable program?\n";
-		exit(1);
+		exit(0);
 	}
 	else cout << "Found "<<executableProgram<< endl;
 #else
 	if (!isExist(executableProgram))
 	{
 		cerr << "Missing your exexutable program?\n";
-		exit(1);
+		exit(0);
 	}
 	else cout << "Found "<<executableProgram<< endl;
 #endif
@@ -143,7 +143,7 @@ int main(int argc,char*argv[])
 		cerr<<"Please Consider Making Them equivalent in length!"<<endl;
 		cout<<"Stopped!"<<endl;
 		cout << '\a';//produce a beep
-		exit(3);
+		exit(0);
 	}
 
 	unsigned int errorFlag;
@@ -186,9 +186,13 @@ int main(int argc,char*argv[])
 #endif
 	//compare between both Actual Results and expected Results.
 	compareResults(actualResult,g_ExpectedResult);
-	remove("ActualResults");
 	cout<<endl<<"End Tests"<<endl;
 	cout<<"Spark TeamWork - EECE 2017"<<endl;
+	remove("ActualResults");
+	/*on Windows*/
+	remove("SparkRun.exe");
+	/*on Linux*/
+	remove("SparkRun");
 
 	return 0;
 }
@@ -333,10 +337,14 @@ void compareResults(vector<string>& Actual, vector<string>& Expected)
 	cout<<endl;
 	cout<<"Total Tests: "<<iterations_size<<endl;
 	cout<<"Passed Tests: "<<(iterations_size-FailCounter-noOutputCounter-g_RuntimeError.size()-MULTI_LINESCounter) <<endl;
-	cout<<"Failed Tests: "<<FailCounter <<endl;
-	cout<<"No Output Tests: "<<noOutputCounter<<endl;
-	cout<<"Run Time Error Tests: "<<g_RuntimeError.size()<<endl;
-	cout<<"Multi Lines Outputs from the target:"<<MULTI_LINESCounter<<endl;
+	if(FailCounter != 0)
+		cout<<"Failed Tests: "<<FailCounter <<endl;
+	if(noOutputCounter != 0)
+		cout<<"No Output Tests: "<<noOutputCounter<<endl;
+	if(g_RuntimeError.size() != 0)
+		cout<<"Run Time Error Tests: "<<g_RuntimeError.size()<<endl;
+	if(MULTI_LINESCounter != 0)
+		cout<<"Multi Lines Outputs from the target:"<<MULTI_LINESCounter<<endl;
 
 	if(nonEqualFlag == true)
 	{
