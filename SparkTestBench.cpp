@@ -1,7 +1,7 @@
 /*
 	You have all permissions to modified this code and improve its capablilities.
 	SparkTeam - Computer Team
-	SparkTB v1.2
+	SparkTB v1.03
 */
 
 #define VERSION 1.03
