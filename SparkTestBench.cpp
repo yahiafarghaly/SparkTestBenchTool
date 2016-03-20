@@ -3,7 +3,6 @@
 	SparkTeam - Computer Team
 	SparkTB v1.03
 */
-
 #define VERSION 1.03
 
 #include<vector>
