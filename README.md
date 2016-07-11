@@ -23,14 +23,14 @@ Spark v1.01
 
 *watch testCases at the time of performing it.
 
-*added no_output counter and runtimeError counter
+*added 'no_output' counter and 'runtimeError' counter
 
 Spark v1.0
 ----------------
 
-*detect runtime errors and no outputs
+*detect 'runtime errors' and 'no outputs'
 
-*able to customize another test cases
+*able to customize other test cases
 
 
 
